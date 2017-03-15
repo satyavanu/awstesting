@@ -1,0 +1,57 @@
+<html>
+
+<head>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
+
+    <script type="text/javascript">
+        AWS.config.update({
+            region: "us-west-2",
+            endpoint: 'https://dynamodb.us-west-2.amazonaws.com/',
+            accessKeyId: "AKIAIJSCYXCYEOJK5VNQ",
+            secretAccessKey: "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"
+        });
+        var dynamodb = new AWS.DynamoDB();
+   
+        var docClient = new AWS.DynamoDB.DocumentClient();
+
+       
+       
+       
+        function queryData() {
+
+            var params = {
+                TableName: "news"
+            };
+
+            docClient.query(params, function (err, data) {
+                if (err) {
+                    document.getElementById('textarea').innerHTML += "Unable to query. Error: " + "\n" + JSON.stringify(
+                        err, undefined, 2);
+                } else {
+                    data.Items.forEach(function (movie) {
+                        document.getElementById('textarea').innerHTML += "\n" + movie.Title + ": " +
+                            movie.description;
+                    });
+
+                }
+            });
+        }
+
+
+    </script>
+</head>
+
+<body>
+    <table border=1>
+        <td>
+            <table border=1>
+                <caption>Query and Scan</caption>
+                <td><input id="queryData" type="button" value="Query" onclick="queryData();" /></td>
+            </table>
+        </td>
+    </table>
+    <br>
+    <textarea readonly id="textarea" style="width:400px; height:800px"></textarea>
+</body>
+
+</html>
